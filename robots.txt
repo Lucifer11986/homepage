@@ -1,0 +1,16 @@
+# robots.txt für AbyssForge Studio
+
+# Alle Bots dürfen die Website durchsuchen
+User-agent: *
+Allow: /
+
+# Verzeichnis mit Admin-Funktionen oder sensiblen Daten blockieren
+Disallow: /admin/
+Disallow: /backend/
+Disallow: /private/
+
+# Keine .php-Dateien indexieren (optional, falls SEO-technisch sinnvoll)
+Disallow: /*.php$
+
+# Sitemap einbinden (falls vorhanden, z. B. sitemap.xml im Root)
+Sitemap: https://www.deinedomain.de/sitemap.xml

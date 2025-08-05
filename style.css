@@ -1,0 +1,773 @@
+/* Lucifer11986 Twitch-Website – Feuer-Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Cinzel:wght@700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container für Main + Sidebar */
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: 2rem auto;
+  gap: 2rem;
+}
+
+/* Hauptbereich nimmt 2/3 der Breite */
+main {
+  flex: 2;
+  background: rgba(20, 0, 0, 0.75);
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+  padding: 2rem;
+  animation: fadeIn 2s ease;
+  color: #f0f0f0;
+}
+
+/* Sidebar rechts, 1/3 der Breite */
+.sidebar {
+  flex: 1;
+  background: rgba(30, 0, 0, 0.85);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 0 25px crimson;
+  color: #f0f0f0;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Überschriften in Sidebar */
+.sidebar h2 {
+  font-family: 'Cinzel', serif;
+  color: crimson;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 8px #000;
+}
+
+/* Einträge in Sidebar */
+.sidebar .entry {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #660000;
+}
+
+.sidebar .entry:last-child {
+  border-bottom: none;
+}
+
+/* Titel des Eintrags */
+.sidebar .entry-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ff3c00;
+  margin-bottom: 0.2rem;
+}
+
+/* Autor und Datum */
+.sidebar .entry-meta {
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+/* Link im Sidebar-Eintrag */
+.sidebar a {
+  color: #ff6a00;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Anpassung */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  main, .sidebar {
+    flex: none;
+    width: 100%;
+  }
+}
+
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: #0d0d0d;
+  color: #f0f0f0;
+  overflow-x: hidden;
+  position: relative;
+  animation: fadeIn 1.2s ease-in;
+}
+
+/* Feuerpartikel Canvas */
+#fire-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Header */
+header {
+  background: rgba(10, 0, 0, 0.9);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid crimson;
+  box-shadow: 0 0 20px crimson;
+  animation: slideDown 1s ease-out;
+  z-index: 10;
+}
+
+nav a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #f0f0f0;
+  font-size: 1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+nav a:hover {
+  color: crimson;
+  text-shadow: 0 0 10px crimson;
+}
+
+nav a.active {
+  background-color: #ff3c00;
+  color: #000;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+}
+
+/* Livestatus */
+#live-status {
+  display: inline-block;
+  font-weight: bold;
+  font-family: 'Cinzel', serif;
+  padding: 0.5rem 1.2rem;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  animation: pulse 2s infinite;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+  background: linear-gradient(135deg, #a00000, #ff0000);
+  color: #fff;
+}
+
+#live-status.online {
+  background: linear-gradient(135deg, #28a745, #3ce45e);
+  box-shadow: 0 0 15px #28a745;
+}
+
+#live-status.offline {
+  background: #444;
+  box-shadow: none;
+  color: #ccc;
+}
+
+/* Main */
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  background: rgba(20, 0, 0, 0.75);
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+  position: relative;
+  z-index: 5;
+  animation: fadeIn 2s ease;
+}
+
+section {
+  margin-bottom: 3rem;
+}
+
+h1, h2, h3 {
+  font-family: 'Cinzel', serif;
+  margin-bottom: 1rem;
+  color: crimson;
+  text-shadow: 0 0 8px #000;
+  animation: glowText 3s ease-in-out infinite alternate;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Twitch Embed */
+#twitch-embed {
+  width: 100%;
+  height: 600px;
+  margin: 2rem auto;
+  border: 2px solid crimson;
+  border-radius: 10px;
+  box-shadow: 0 0 25px crimson;
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Discord-Embed */
+#discord iframe {
+  border: 2px solid crimson;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+  animation: fadeIn 1.5s ease;
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem auto;
+  display: block;
+}
+
+/* Tebex Shop */
+#shop a.btn-link {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background: crimson;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px crimson;
+}
+
+#shop a.btn-link:hover {
+  background: darkred;
+  box-shadow: 0 0 25px crimson;
+}
+
+/* Forum Styles */
+.forum-intro {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #ddd;
+}
+
+.forum-posting form {
+  background: rgba(30, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 60, 0, 0.5);
+}
+
+.forum-posting input[type="text"],
+.forum-posting textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 2px solid crimson;
+  border-radius: 8px;
+  background: #1a0000;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.forum-posting textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.captcha-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.captcha-box img {
+  height: 40px;
+  border: 1px solid #444;
+  border-radius: 4px;
+}
+
+.forum-posting button {
+  padding: 0.7rem 1.5rem;
+  background-color: #ff3c00;
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px crimson;
+}
+
+.forum-posting button:hover {
+  background-color: darkred;
+  color: #fff;
+  box-shadow: 0 0 20px crimson;
+}
+
+.forum-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.forum-card {
+  background: rgba(0, 0, 0, 0.5);
+  border-left: 4px solid #ff3c00;
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 60, 0, 0.3);
+  color: #fff;
+}
+
+.forum-card:hover {
+  background: rgba(30, 0, 0, 0.6);
+  transform: translateY(-4px);
+}
+
+.forum-card h3 {
+  margin-top: 0;
+  color: #ff5f1f;
+  font-size: 1.3rem;
+}
+
+.forum-card p {
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.forum-hint {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  background: rgba(10, 0, 0, 0.8);
+  color: #aaa;
+  border-top: 1px solid crimson;
+}
+
+footer a {
+  color: #aaa;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  color: crimson;
+}
+
+/* Feuer-Funken */
+.spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: orange;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: spark 2s linear infinite;
+}
+
+/* Animationen */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes glowText {
+  0% { text-shadow: 0 0 5px crimson; }
+  100% { text-shadow: 0 0 20px crimson, 0 0 30px red; }
+}
+
+@keyframes spark {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* Dropdown-Menü */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1e1e1e;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #ccc;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Button-Link */
+.btn-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #7a0000;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-link:hover {
+    background-color: #a30000;
+}
+
+/* To The Top Button – aktualisiert */
+#toTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  background: linear-gradient(135deg, #660000, #990000);
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+#toTopBtn:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #ff0000, #ff4500);
+  box-shadow: 0 0 20px crimson;
+}
+
+/* Forum Post Kategorie */
+.post p strong {
+  color: #ff5f1f;
+  font-weight: 700;
+  margin-right: 0.3rem;
+}
+
+.post p em {
+  color: #aa0000;
+  font-style: normal;
+  opacity: 0.8;
+  margin-left: 0.5rem;
+}
+
+.post {
+  background: rgba(30, 0, 0, 0.6);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #ff3c00;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 60, 0, 0.4);
+  transition: background 0.3s ease;
+  color: #fff;
+}
+
+.post:hover {
+  background: rgba(40, 0, 0, 0.75);
+}
+
+.status-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(51, 0, 0, 0.9);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9999;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 10px rgba(255, 0, 0, 0.7);
+}
+
+.cookie-banner a {
+  color: #ff3c00;
+  text-decoration: underline;
+}
+
+.cookie-banner button {
+  background: #ff3c00;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #000;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cookie-banner button:hover {
+  background: darkred;
+  color: #fff;
+}
+
+/* ==== RESPONSIVE NAVIGATION ==== */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+  color: #f8f8f8;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .main-nav ul {
+    display: none;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    border: 1px solid #333;
+    z-index: 1000;
+  }
+
+  .main-nav ul li {
+    border-bottom: 1px solid #333;
+  }
+
+  #menu-toggle:checked + .hamburger + .main-nav ul {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .header-container {
+    position: relative;
+  }
+}
+
+.darkmode-toggle {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #111;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 1001;
+  color: #f0f0f0;
+}
+
+body.dark {
+  background-color: #0b0b0b;
+  color: #e0e0e0;
+}
+
+body.dark header,
+body.dark footer {
+  background-color: #111;
+}
+
+body.dark .main-nav ul {
+  background-color: #111;
+}
+
+/* Einfaches Styling für Footer-Login */
+#admin-login-form input[type="text"],
+#admin-login-form input[type="password"] {
+  padding: 0.3rem;
+  margin-right: 0.3rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#admin-login-form button {
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  border: none;
+  background: #ff3c00;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#admin-logout {
+  background: #7a0000;
+  color: #fff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.forum-card.pending {
+  border-left: 4px solid orange;
+  background-color: #2a1f0a;
+}
+
+/* Status-Icons */
+.status-icon.online { background-color: #28a745; }
+.status-icon.offline { background-color: #dc3545; }
+
+/* === Admin Dashboard & Moderation Styles === */
+
+.section {
+  background: rgba(30,0,0,0.7);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px crimson;
+  color: #f0f0f0;
+  font-family: 'Orbitron', sans-serif;
+}
+
+h1, h2 {
+  font-family: 'Cinzel', serif;
+  color: crimson;
+  text-shadow: 0 0 8px #000;
+}
+
+.btn {
+  background: #ff3c00;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 15px crimson;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: darkred;
+  color: #fff;
+  box-shadow: 0 0 25px crimson;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  color: #f0f0f0;
+}
+
+th, td {
+  padding: 0.6rem;
+  border-bottom: 1px solid #660000;
+  text-align: left;
+}
+
+th {
+  background: #330000;
+  color: #ff3c00;
+}
+
+/* Delete-Button im Moderationsbereich */
+.delete-button {
+  background-color: darkred;
+  color: white;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  float: right;
+  transition: background 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #a00000;
+}
+
+/* Formular Styling für Moderation */
+form {
+  margin-top: 0.5rem;
+}
+
+/* Fehler- und Erfolgsmeldungen */
+p.error-message {
+  color: #ff3333;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+p.success-message {
+  color: #33cc33;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}

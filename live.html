@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Stream – Lucifer11986</title>
+  <meta name="description" content="Schalte live ein auf dem Twitch Kanal von Lucifer11986. Verpasse keinen Stream und werde Teil der Community." />
+  <meta name="keywords" content="Lucifer11986, Live, Twitch, Stream, Gaming" />
+  <meta name="author" content="Lucifer11986" />
+
+  <meta property="og:title" content="Live Stream – Lucifer11986" />
+  <meta property="og:description" content="Schalte live ein auf dem Twitch Kanal von Lucifer11986. Verpasse keinen Stream und werde Teil der Community." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lucifer-live.de/live.html" />
+  <meta property="og:image" content="https://lucifer-live.de/images/live-og.jpg" />
+  <meta property="og:locale" content="de_DE" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Live Stream – Lucifer11986" />
+  <meta name="twitter:description" content="Schalte live ein auf dem Twitch Kanal von Lucifer11986. Verpasse keinen Stream und werde Teil der Community." />
+  <meta name="twitter:image" content="https://lucifer-live.de/images/live-twitter.jpg" />
+  <meta name="twitter:site" content="@Lucifer11986" />
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <h1 class="glow-text">🕯️ AbyssForge Community</h1>
+      <nav>
+        <a href="index.html">Startseite</a>
+        <a href="about.html">Über mich</a>
+        <a href="streams.html">Streams</a>
+        <a href="events.html">Events</a>
+        <a href="contact.html">Kontakt</a>
+        <a href="blog.php">Blog</a>
+        <div class="dropdown">
+          <a href="#" class="dropbtn">Community ▾</a>
+          <div class="dropdown-content">
+            <a href="discord.html">Discord</a>
+            <a href="forum.php">Forum</a>
+          </div>
+        </div>
+        <a href="shop.php">Shop</a>
+        <a href="live.html" class="active">Live</a>
+      </nav>
+      <div id="live-status" class="status offline">Streamstatus wird geladen...</div>
+    </header>
+
+    <main class="stream-page">
+      <section class="stream-wrapper">
+        <h2>Jetzt live auf Twitch:</h2>
+        <div id="twitch-embed">
+          <iframe
+            src="https://player.twitch.tv/?channel=lucifer11986&parent=lucifer-live.de&parent=www.lucifer-live.de"
+            height="480"
+            width="100%"
+            allowfullscreen
+            frameborder="0"></iframe>
+        </div>
+
+        <div class="twitch-chat" style="margin-top: 1rem;">
+          <iframe
+            frameborder="0"
+            scrolling="no"
+            id="chat_embed"
+            src="https://www.twitch.tv/embed/lucifer11986/chat?parent=lucifer-live.de&parent=www.lucifer-live.de"
+            height="500"
+            width="100%"></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Lucifer11986 – AbyssForge. Alle Rechte vorbehalten.</p>
+      <div style="font-size: 0.85em; margin-top: 5px;">
+        <a href="impressum.html">Impressum</a> |
+        <a href="datenschutz.html">Datenschutz</a> |
+        <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a> |
+        <a href="cookies.html">Cookies</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function setLiveStatus(online) {
+      const statusElem = document.getElementById('live-status');
+      if (online) {
+        statusElem.textContent = 'Online';
+        statusElem.classList.remove('offline');
+        statusElem.classList.add('online');
+      } else {
+        statusElem.textContent = 'Offline';
+        statusElem.classList.remove('online');
+        statusElem.classList.add('offline');
+      }
+    }
+
+    // Dummy-Status, alle 10s zufällig wechseln (zu Testzwecken)
+    setLiveStatus(false);
+    setInterval(() => {
+      const online = Math.random() > 0.5;
+      setLiveStatus(online);
+    }, 10000);
+  </script>
+</body>
+</html>

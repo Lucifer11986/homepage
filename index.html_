@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lucifer11986 - Twitch Kanal</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="overlay">
+        <header>
+            <h1>Twitch Streamer Lucifer11986</h1>
+            <nav>
+                <a href="#home">Startseite</a>
+                <a href="#about">Über mich</a>
+                <a href="#streams">Streams</a>
+                <a href="#events">Events</a>
+                <a href="#contact">Kontakt</a>
+                <a href="#comingsoon">Coming Soon</a>
+                <a href="live.html">Live</a>
+            </nav>
+            <div id="live-status" class="live-status offline">Offline</div>
+        </header>
+
+        <main>
+            <section id="home">
+                <h2>Willkommen auf dem offiziellen Twitch Kanal von Lucifer11986</h2>
+                <p>Hier findest du alles rund um meine Streams, Events und die Community. Tauche ein in dunkle Welten, Gaming und spannende Abenteuer. Bleib dran für Updates und zukünftige Projekte!</p>
+                <p><a href="https://twitch.tv/Lucifer11986" target="_blank" rel="noopener" class="btn-link">Live auf Twitch anschauen</a></p>
+            </section>
+
+            <section id="about">
+                <h2>Über mich</h2>
+                <p>Ich bin Lucifer11986, leidenschaftlicher Gamer und Streamer bei mir findet ihr Aufbau/Strategie, Wirtschafts Simulations Spiele aber auch MMO/MMORPG oder auch Simulation.</p>
+            </section>
+
+            <section id="streams">
+                <h2>Streams & Videos</h2>
+                <p>Hier findest du die wichtigsten Infos zu meinen Streams:</p>
+                <ul>
+                    <li><strong>Streaming-Zeiten:</strong> gibt es noch keinene</li>
+                    <li><strong>Spiele:</strong> ETS2, GTA V Mapping, Simulationen und mehr</li>
+                    <li><strong>Archiv:</strong> <a href="https://www.twitch.tv/Lucifer11986/videos" target="_blank" rel="noopener">Gespeicherte Videos auf Twitch</a></li>
+                </ul>
+            </section>
+
+            <section id="events">
+                <h2>Events & Specials</h2>
+                <p>Besondere Events und Community-Aktionen werden hier angekündigt. Bleib gespannt auf Gewinnspiele, Special-Streams und Co.</p>
+                <ul>
+                    <li><strong>Geplantes Event:</strong> coming Soon</li>
+                    <li><strong>Community-Treffen:</strong> Infos folgen</li>
+                </ul>
+            </section>
+
+            <section id="contact">
+                <h2>Kontakt</h2>
+                <p>Fragen, Kooperationen oder einfach nur Grüße? Melde dich gerne hier:</p>
+                <ul>
+                    <li>Email: <a href="mailto:kontakt@lucifer11986.de">kontakt@lucifer11986.de</a></li>
+                    <li>Twitch Chat: Direkt im Stream</li>
+                    <li>Discord: <a href="#">Discord-Link folgt</a></li>
+                </ul>
+            </section>
+
+            <section id="comingsoon">
+                <h2>Demnächst</h2>
+                <p>Hier werden bald weitere spannende Seiten folgen:</p>
+                <ul>
+                    <li>Shop mit Merchandise</li>
+                    <li>Blog für Gaming-News & Tipps</li>
+                    <li>Community-Forum</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Lucifer11986. Alle Rechte vorbehalten. | <a href="impressum.html">Impressum</a></p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
