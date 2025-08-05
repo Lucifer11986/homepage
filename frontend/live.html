@@ -85,26 +85,5 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-    function setLiveStatus(online) {
-      const statusElem = document.getElementById('live-status');
-      if (online) {
-        statusElem.textContent = 'Online';
-        statusElem.classList.remove('offline');
-        statusElem.classList.add('online');
-      } else {
-        statusElem.textContent = 'Offline';
-        statusElem.classList.remove('online');
-        statusElem.classList.add('offline');
-      }
-    }
-
-    // Dummy-Status, alle 10s zufällig wechseln (zu Testzwecken)
-    setLiveStatus(false);
-    setInterval(() => {
-      const online = Math.random() > 0.5;
-      setLiveStatus(online);
-    }, 10000);
-  </script>
 </body>
 </html>
