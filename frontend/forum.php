@@ -116,7 +116,7 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <p>&copy; 2025 Lucifer11986 – AbyssForge. Alle Rechte vorbehalten.</p>
 
     <?php if ($isUser): ?>
-      <p>Angemeldet als <?= $isAdmin ? 'Admin' : 'Benutzer' ?>. <a href="admin_logout.php" id="admin-logout">Logout</a></p>
+      <p>Angemeldet als <?= $isAdmin ? 'Admin' : 'Benutzer' ?>. <a href="#" id="logout-btn">Logout</a></p>
       <a href="dashboard.php">Zum Dashboard</a>
     <?php else: ?>
       <form id="admin-login-form" action="admin_login.php" method="POST" style="margin-top:1rem;">
@@ -132,6 +132,17 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 document.addEventListener('DOMContentLoaded', function() {
     const postsContainer = document.getElementById('forum-posts-container');
     const postForm = document.getElementById('post-form');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('../backend/api/users/logout.php')
+                .then(() => {
+                    window.location.href = 'forum.php';
+                });
+        });
+    }
 
     if(postForm) {
         postForm.addEventListener('submit', function(event) {

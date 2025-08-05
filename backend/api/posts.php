@@ -6,18 +6,35 @@ require_once '../database.php';
 // Set the content type of the response to JSON
 header('Content-Type: application/json');
 
-// Check if a category is provided in the GET request
-$category = isset($_GET['category']) ? $_GET['category'] : null;
+// Base query
+$sql = "SELECT id, title, content, created_at, category, image_path FROM blog_posts";
+$params = [];
+$types = "";
 
-if ($category) {
-    // Use a prepared statement to prevent SQL injection
-    $stmt = $db->prepare("SELECT id, title, content, created_at, category, image_path FROM blog_posts WHERE category = ? ORDER BY created_at DESC");
-    $stmt->bind_param("s", $category);
+// Check for 'category' parameter
+if (isset($_GET['category'])) {
+    $sql .= " WHERE category = ?";
+    $params[] = $_GET['category'];
+    $types .= "s";
+}
+
+$sql .= " ORDER BY created_at DESC";
+
+// Check for 'limit' parameter
+if (isset($_GET['limit'])) {
+    $sql .= " LIMIT ?";
+    $params[] = $_GET['limit'];
+    $types .= "i";
+}
+
+// Prepare and execute the SQL query
+if (!empty($params)) {
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    // If no category is specified, fetch all posts
-    $result = $db->query("SELECT id, title, content, created_at, category, image_path FROM blog_posts ORDER BY created_at DESC");
+    $result = $db->query($sql);
 }
 
 // Check if the query was successful

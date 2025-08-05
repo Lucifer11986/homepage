@@ -1,22 +1,3 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// DB-Verbindung
-$db = new mysqli("127.0.0.1", "web145762", "Schnitzel12.,", "usr_web145762_1", 3306);
-if ($db->connect_error) {
-    die("Verbindungsfehler: " . $db->connect_error);
-}
-
-// Neuster freigegebener Forum-Beitrag
-$forumResult = $db->query("SELECT id, title, author, created_at FROM forum_posts WHERE approved = 1 ORDER BY created_at DESC LIMIT 1");
-$forumPost = $forumResult && $forumResult->num_rows > 0 ? $forumResult->fetch_assoc() : null;
-
-// Neuster Blog-Beitrag (angepasst auf deine Tabelle)
-$blogResult = $db->query("SELECT id, title, created_at FROM blog_posts ORDER BY created_at DESC LIMIT 1");
-$blogPost = $blogResult && $blogResult->num_rows > 0 ? $blogResult->fetch_assoc() : null;
-?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -55,32 +36,14 @@ $blogPost = $blogResult && $blogResult->num_rows > 0 ? $blogResult->fetch_assoc(
             </main>
 
             <aside class="sidebar">
-                <section>
+                <section id="latest-forum-post">
                     <h2>Neuster Forum-Beitrag</h2>
-                    <?php if ($forumPost): ?>
-                        <div class="entry">
-                            <a href="forum_post.php?id=<?= (int)$forumPost['id'] ?>">
-                                <div class="entry-title"><?= htmlspecialchars($forumPost['title']) ?></div>
-                            </a>
-                            <div class="entry-meta"><?= htmlspecialchars($forumPost['author']) ?> - <?= date('d.m.Y H:i', strtotime($forumPost['created_at'])) ?></div>
-                        </div>
-                    <?php else: ?>
-                        <p>Keine Beiträge gefunden.</p>
-                    <?php endif; ?>
+                    <!-- Latest forum post will be loaded here -->
                 </section>
 
-                <section>
+                <section id="latest-blog-post">
                     <h2>Neuster Blog-Eintrag</h2>
-                    <?php if ($blogPost): ?>
-                        <div class="entry">
-                            <a href="blog_post.php?id=<?= (int)$blogPost['id'] ?>">
-                                <div class="entry-title"><?= htmlspecialchars($blogPost['title']) ?></div>
-                            </a>
-                            <div class="entry-meta">Veröffentlicht am <?= date('d.m.Y', strtotime($blogPost['created_at'])) ?></div>
-                        </div>
-                    <?php else: ?>
-                        <p>Keine Blogbeiträge gefunden.</p>
-                    <?php endif; ?>
+                    <!-- Latest blog post will be loaded here -->
                 </section>
             </aside>
         </div>
@@ -97,6 +60,49 @@ $blogPost = $blogResult && $blogResult->num_rows > 0 ? $blogResult->fetch_assoc(
     </div>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch latest forum post
+            fetch('../backend/api/forum/posts.php?approved=1&limit=1')
+                .then(response => response.json())
+                .then(posts => {
+                    const container = document.getElementById('latest-forum-post');
+                    if (posts.length > 0) {
+                        const post = posts[0];
+                        container.innerHTML += `
+                            <div class="entry">
+                                <a href="forum_post.php?id=${post.id}">
+                                    <div class="entry-title">${post.title}</div>
+                                </a>
+                                <div class="entry-meta">${post.author} - ${new Date(post.created_at).toLocaleString('de-DE')}</div>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML += '<p>Keine Beiträge gefunden.</p>';
+                    }
+                });
+
+            // Fetch latest blog post
+            fetch('../backend/api/posts.php?limit=1')
+                .then(response => response.json())
+                .then(posts => {
+                    const container = document.getElementById('latest-blog-post');
+                    if (posts.length > 0) {
+                        const post = posts[0];
+                        container.innerHTML += `
+                            <div class="entry">
+                                <a href="blog_post.php?id=${post.id}">
+                                    <div class="entry-title">${post.title}</div>
+                                </a>
+                                <div class="entry-meta">Veröffentlicht am ${new Date(post.created_at).toLocaleDateString('de-DE')}</div>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML += '<p>Keine Blogbeiträge gefunden.</p>';
+                    }
+                });
+        });
+    </script>
     <button id="toTopBtn" title="Nach oben">⬆</button>
 </body>
 </html>

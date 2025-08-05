@@ -108,14 +108,25 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     </div>
 
     <div class="section center">
-        <a href="admin_logout.php" class="btn" style="background:#7a0000;">Logout</a>
+        <a href="#" id="logout-btn" class="btn" style="background:#7a0000;">Logout</a>
         <a href="blog.php" class="btn" style="background:#7a0000;">Zur Blogseite</a>
     </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logout-btn');
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('../backend/api/users/logout.php')
+                .then(() => {
+                    window.location.href = 'forum.php';
+                });
+        });
+    }
+
     // Fetch open posts count
-    fetch('../backend/api/forum/posts/count.php?approved=0')
+    fetch('../backend/api/forum/count.php?approved=0')
         .then(response => response.json())
         .then(data => {
             document.getElementById('open-posts-count').textContent = data.count;
