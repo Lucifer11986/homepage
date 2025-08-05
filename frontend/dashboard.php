@@ -6,18 +6,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     header("Location: admin_login.php");
     exit();
 }
-
-$db = new mysqli("127.0.0.1", "web145762", "Schnitzel12.,", "usr_web145762_1");
-if ($db->connect_error) {
-    die("DB-Verbindungsfehler: " . $db->connect_error);
-}
-
-// Anzahl offener Beiträge im Forum
-$result = $db->query("SELECT COUNT(*) AS count FROM forum_posts WHERE approved = 0");
-$openCount = $result ? (int)$result->fetch_assoc()['count'] : 0;
-
-// Letzte 5 freigegebene Beiträge im Forum
-$latest = $db->query("SELECT title, author, created_at FROM forum_posts WHERE approved = 1 ORDER BY created_at DESC LIMIT 5");
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -98,30 +86,20 @@ $latest = $db->query("SELECT title, author, created_at FROM forum_posts WHERE ap
 
     <div class="section">
         <h2>Offene Beiträge zur Moderation</h2>
-        <p>Es gibt <strong><?= $openCount ?></strong> Beitrag<?= ($openCount === 1 ? '' : 'e') ?>, die auf Freigabe warten.</p>
+        <p>Es gibt <strong id="open-posts-count">...</strong> Beitrag, die auf Freigabe warten.</p>
         <a href="moderate_posts.php" class="btn">Beiträge moderieren</a>
     </div>
 
     <div class="section">
         <h2>Letzte freigegebene Beiträge</h2>
-        <?php if ($latest && $latest->num_rows > 0): ?>
-            <table>
-                <thead>
-                    <tr><th>Titel</th><th>Autor</th><th>Datum</th></tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $latest->fetch_assoc()): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row['title']) ?></td>
-                            <td><?= htmlspecialchars($row['author']) ?></td>
-                            <td><?= $row['created_at'] ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>Keine freigegebenen Beiträge gefunden.</p>
-        <?php endif; ?>
+        <table id="latest-posts-table">
+            <thead>
+                <tr><th>Titel</th><th>Autor</th><th>Datum</th></tr>
+            </thead>
+            <tbody>
+                <!-- Latest posts will be loaded here -->
+            </tbody>
+        </table>
     </div>
 
     <div class="section center">
@@ -130,8 +108,54 @@ $latest = $db->query("SELECT title, author, created_at FROM forum_posts WHERE ap
     </div>
 
     <div class="section center">
-        <a href="admin_logout.php" class="btn" style="background:#7a0000;">Logout</a>
+        <a href="#" id="logout-btn" class="btn" style="background:#7a0000;">Logout</a>
         <a href="blog.php" class="btn" style="background:#7a0000;">Zur Blogseite</a>
     </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logout-btn');
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('../backend/api/users/logout.php')
+                .then(() => {
+                    window.location.href = 'forum.php';
+                });
+        });
+    }
+
+    // Fetch open posts count
+    fetch('../backend/api/forum/count.php?approved=0')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('open-posts-count').textContent = data.count;
+        });
+
+    // Fetch latest posts
+    fetch('../backend/api/forum/posts.php?approved=1&limit=5')
+        .then(response => response.json())
+        .then(posts => {
+            const tableBody = document.querySelector('#latest-posts-table tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+            if (posts.length > 0) {
+                posts.forEach(post => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${post.title}</td>
+                        <td>${post.author}</td>
+                        <td>${post.created_at}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3">Keine freigegebenen Beiträge gefunden.</td>';
+                tableBody.appendChild(row);
+            }
+        });
+});
+</script>
+
 </body>
 </html>

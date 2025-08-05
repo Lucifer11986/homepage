@@ -59,7 +59,7 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <?php if ($isUser): ?>
       <section class="forum-posting">
         <h2>📬 Beitrag verfassen</h2>
-        <form action="submit_post.php" method="POST">
+        <form id="post-form">
           <input type="text" name="title" placeholder="Titel" required />
           <textarea name="message" placeholder="Dein Beitrag" required></textarea>
 
@@ -95,38 +95,9 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
     <section class="forum-entries">
       <h2>📖 Beiträge</h2>
-
-      <?php
-      $db = new mysqli("127.0.0.1", "web145762", "Schnitzel12.,", "usr_web145762_1");
-      if ($db->connect_error) {
-          echo "<p>Fehler bei der Datenbankverbindung.</p>";
-      } else {
-          $sql = "SELECT id, title, message, author, category, created_at FROM forum_posts WHERE approved = 1 ORDER BY created_at DESC";
-          $result = $db->query($sql);
-
-          if ($result && $result->num_rows > 0) {
-              while ($row = $result->fetch_assoc()) {
-                  echo "<div class='post'>";
-                  echo "<h3>" . htmlspecialchars($row['title']) . "</h3>";
-                  echo "<p><strong>Kategorie:</strong> " . htmlspecialchars($row['category']) . "</p>";
-                  echo "<p>" . nl2br(htmlspecialchars($row['message'])) . "</p>";
-                  echo "<small>von <strong>" . htmlspecialchars($row['author']) . "</strong> am " . $row['created_at'] . "</small>";
-
-                  if ($isAdmin) {
-                      echo "<form method='POST' action='delete_post.php' onsubmit='return confirm(\"Diesen Beitrag wirklich löschen?\");'>";
-                      echo "<input type='hidden' name='post_id' value='" . (int)$row['id'] . "' />";
-                      echo "<button type='submit' class='delete-button'>🗑️ Löschen</button>";
-                      echo "</form>";
-                  }
-
-                  echo "</div>";
-              }
-          } else {
-              echo "<p>Keine Beiträge gefunden.</p>";
-          }
-          $db->close();
-      }
-      ?>
+      <div id="forum-posts-container">
+        <!-- Forum posts will be loaded here -->
+      </div>
     </section>
 
     <section class="forum-categories">
@@ -145,7 +116,7 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <p>&copy; 2025 Lucifer11986 – AbyssForge. Alle Rechte vorbehalten.</p>
 
     <?php if ($isUser): ?>
-      <p>Angemeldet als <?= $isAdmin ? 'Admin' : 'Benutzer' ?>. <a href="admin_logout.php" id="admin-logout">Logout</a></p>
+      <p>Angemeldet als <?= $isAdmin ? 'Admin' : 'Benutzer' ?>. <a href="#" id="logout-btn">Logout</a></p>
       <a href="dashboard.php">Zum Dashboard</a>
     <?php else: ?>
       <form id="admin-login-form" action="admin_login.php" method="POST" style="margin-top:1rem;">
@@ -156,5 +127,97 @@ $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
     <?php endif; ?>
   </footer>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const postsContainer = document.getElementById('forum-posts-container');
+    const postForm = document.getElementById('post-form');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            fetch('../backend/api/users/logout.php')
+                .then(() => {
+                    window.location.href = 'forum.php';
+                });
+        });
+    }
+
+    if(postForm) {
+        postForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(postForm);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('../backend/api/forum/posts.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                const messageContainer = document.createElement('p');
+                if (result.success) {
+                    messageContainer.style.color = 'green';
+                    messageContainer.textContent = result.success;
+                    postForm.reset();
+                } else {
+                    messageContainer.style.color = 'red';
+                    messageContainer.textContent = result.error;
+                }
+                postForm.prepend(messageContainer);
+            })
+            .catch(error => {
+                console.error('Error submitting post:', error);
+                const messageContainer = document.createElement('p');
+                messageContainer.style.color = 'red';
+                messageContainer.textContent = 'Ein unerwarteter Fehler ist aufgetreten.';
+                postForm.prepend(messageContainer);
+            });
+        });
+    }
+
+    fetch('../backend/api/forum/posts.php')
+        .then(response => response.json())
+        .then(posts => {
+            if (posts.length === 0) {
+                postsContainer.innerHTML = '<p>Keine Beiträge gefunden.</p>';
+                return;
+            }
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+
+                const title = document.createElement('h3');
+                title.textContent = post.title;
+                postElement.appendChild(title);
+
+                const category = document.createElement('p');
+                category.innerHTML = '<strong>Kategorie:</strong> ' + post.category;
+                postElement.appendChild(category);
+
+                const message = document.createElement('p');
+                message.innerHTML = post.message.replace(/\\n/g, '<br>');
+                postElement.appendChild(message);
+
+                const meta = document.createElement('small');
+                meta.innerHTML = 'von <strong>' + post.author + '</strong> am ' + post.created_at;
+                postElement.appendChild(meta);
+
+                postsContainer.appendChild(postElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching forum posts:', error);
+            postsContainer.innerHTML = '<p>Fehler beim Laden der Beiträge.</p>';
+        });
+});
+</script>
+
 </body>
 </html>

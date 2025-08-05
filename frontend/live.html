@@ -54,7 +54,7 @@
         <h2>Jetzt live auf Twitch:</h2>
         <div id="twitch-embed">
           <iframe
-            src="https://player.twitch.tv/?channel=lucifer11986&parent=lucifer-live.de&parent=www.lucifer-live.de"
+            src="https://player.twitch.tv/?channel=lucifer11986"
             height="480"
             width="100%"
             allowfullscreen
@@ -66,7 +66,7 @@
             frameborder="0"
             scrolling="no"
             id="chat_embed"
-            src="https://www.twitch.tv/embed/lucifer11986/chat?parent=lucifer-live.de&parent=www.lucifer-live.de"
+            src="https://www.twitch.tv/embed/lucifer11986/chat"
             height="500"
             width="100%"></iframe>
         </div>
@@ -85,26 +85,5 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-    function setLiveStatus(online) {
-      const statusElem = document.getElementById('live-status');
-      if (online) {
-        statusElem.textContent = 'Online';
-        statusElem.classList.remove('offline');
-        statusElem.classList.add('online');
-      } else {
-        statusElem.textContent = 'Offline';
-        statusElem.classList.remove('online');
-        statusElem.classList.add('offline');
-      }
-    }
-
-    // Dummy-Status, alle 10s zufällig wechseln (zu Testzwecken)
-    setLiveStatus(false);
-    setInterval(() => {
-      const online = Math.random() > 0.5;
-      setLiveStatus(online);
-    }, 10000);
-  </script>
 </body>
 </html>
